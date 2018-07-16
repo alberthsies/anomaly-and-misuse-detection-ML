@@ -205,3 +205,12 @@ False Alarm Rate:  0.07064881565396498
 =============================================================================================================
 =============================================================================================================
 =============================================================================================================
+
+
+- With autoencoder, the protocol, service, and flag fields are encoded with One-Hot encoding.
+- Not all data have been normalized (to be between 0 and 1). This probably affects the result.
+- Based on my experiment on using autoencoder for anomaly detection, the result cannot be really good because
+most of the attacks have MSE between 1000 and 2000 while the normal data are spreaded from ~0 to billions
+(Previously there was only 1 hidden layer, after adding additional layers, the result is better)
+
+* Using RNN probably suits this case the best but I am still learning it
