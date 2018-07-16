@@ -1,0 +1,207 @@
+These codes use a dataset called NSL-KDD
+This dataset is basically an improved version of DARPA IDS dataset,
+which is used in the paper NN for Anomaly Detection
+
+
+=============================================================================================================
+=============================================================================================================
+=============================================================================================================
+
+- ML.py is a file implementing Random Forest for anomaly detection.
+- I did not use DNN for this because the result is comparable to RF but the training and testing duration is
+way longer than RF.
+- This is supervised learning.
+- RF Parameters: 10 Estimators, gini criterion, max_depth=None
+- First I used KDDTrain+.csv file for training data and KDDTest+.csv file for testing data,
+but it performed really bad because there are a lot of attacks in the test data that is not in training data
+- After I reverse them (KDDTest+.csv for training and KDDTrain+.csv for testing), this is the result:
+=== RF Model ===
+Start training...
+Training duration: 0.265608549118042 seconds
+
+Start testing...
+Testing duration: 88.53268027305603 seconds
+
+Results:
+TP:  54772
+TN:  64121
+FP:  3222
+FN:  3858
+Accuracy:  0.9437974804124694
+Recall:  0.9341975098072659
+Precision:  0.9444425285374349
+False Alarm Rate:  0.04784461636695722
+
+
+=============================================================================================================
+=============================================================================================================
+=============================================================================================================
+
+*anomalyDetection.py
+Below is the report of different model parameters (For anomaly detection using Isolation Forest)
+Based on the experiment, this model can be used for semi-supervised (only use normal data in training) and
+use the model to analyze later data, deciding whether it is malicious or normal.
+* I still not really understand why this model performs better when using only normal data in training
+rather than all data.
+* Using integer encoding here is fine because Decision Tree handles categorical data well
+* Probably model number 8 is the best here based on the result, but its training time and testing time
+are very long. Model number 7 and 9 also have comparable results to model number 8
+
+
+1. IsolationForest with KDDTrain+.csv (max_samples=100) and all normal:
+Starting training process
+Training time: 1282.1611664295197 seconds
+
+Starting testing process
+Testing time: 10356.229110240936 seconds
+
+TP:  3756
+TN:  9583
+FP:  127
+FN:  9077
+Accuracy:  0.5917136139821674
+Recall:  0.2926829268292683
+Precision:  0.9672933298995622
+False Alarm Rate:  0.013079299691040165
+
+
+2. IsolationForest with KDD 20 Percent (max_samples=100), all normal, and test with all train data:
+Starting training process
+Training time: 274.2864351272583 seconds
+
+Starting testing process
+Testing time: 885.738331079483 seconds
+
+TP:  2047
+TN:  12976
+FP:  473
+FN:  9696
+Accuracy:  0.5963401079707844
+Recall:  0.1743166141531125
+Precision:  0.8123015873015873
+False Alarm Rate:  0.03516990110788906
+
+
+3. IsolationForest with KDD 20 Percent (max_samples=100), normal only, and test with all train data:
+Starting training process
+Training time: 125.70518279075623 seconds
+
+Starting testing process
+Testing time: 1332.4178292751312 seconds
+
+TP:  10909
+TN:  12104
+FP:  1345
+FN:  834
+Accuracy:  0.913504287075262
+Recall:  0.9289789661926254
+Precision:  0.8902399216582341
+False Alarm Rate:  0.10000743549706298
+
+
+4. IsolationForest with KDD 20 Percent (max_samples=100), full train data, and test with all train data:
+Starting training process
+Training time: 261.1359133720398 seconds
+
+Starting testing process
+Testing time: 1062.1735832691193 seconds
+
+TP:  1784
+TN:  12713
+FP:  736
+FN:  9959
+Accuracy:  0.5754604636392505
+Recall:  0.15192029294047518
+Precision:  0.707936507936508
+False Alarm Rate:  0.05472525838352294
+
+
+5. IsolationForest with KDD 20 Percent (max_samples=100), normal only, and test with all test data:
+Starting training process
+Training time: 253.91538000106812 seconds
+
+Starting testing process
+Testing time: 1518.5433855056763 seconds
+
+TP:  9059
+TN:  9390
+FP:  320
+FN:  3774
+Accuracy:  0.8183915184314421
+Recall:  0.7059144393360867
+Precision:  0.9658812240110886
+False Alarm Rate:  0.032955715756951595
+
+
+6. IsolationForest with KDDTrain+.csv (max_samples=100), normal only, and test with all test data:
+Starting training process
+Training time: 890.1387009620667 seconds
+
+Starting testing process
+Testing time: 983.3028934001923 seconds
+
+TP:  9301
+TN:  9256
+FP:  454
+FN:  3532
+Accuracy:  0.8231823625959278
+Recall:  0.7247720720018702
+Precision:  0.9534597642234751
+False Alarm Rate:  0.04675592173017508
+
+
+7. IsolationForest with KDD 20 Percent (max_samples=256), normal only, and test with all test data:
+Starting training process
+Training time: 141.86184787750244 seconds
+
+Starting testing process
+Testing time: 929.3458805084229 seconds
+
+TP:  9431
+TN:  9006
+FP:  704
+FN:  3402
+Accuracy:  0.8178592024131659
+Recall:  0.7349022052520845
+Precision:  0.9305377405032067
+False Alarm Rate:  0.07250257466529351
+
+
+8. IsolationForest with KDD 20 Percent (max_samples=100, n_estimators=150), normal only, and test with all test data:
+Starting training process
+Training time: 351.4836769104004 seconds
+
+Starting testing process
+Testing time: 1365.7907252311707 seconds
+
+TP:  9356
+TN:  9366
+FP:  344
+FN:  3477
+Accuracy:  0.8305017078472253
+Recall:  0.7290578976077301
+Precision:  0.9645360824742268
+False Alarm Rate:  0.03542739443872297
+
+
+9. IsolationForest with KDD 20 Percent (max_samples=300, n_estimators=50), normal only, and test with all test data:
+Starting training process
+Training time: 58.219736099243164 seconds
+
+Starting testing process
+Testing time: 380.11264061927795 seconds
+
+TP:  8971
+TN:  9024
+FP:  686
+FN:  3862
+Accuracy:  0.7982522290733265
+Recall:  0.6990571183667108
+Precision:  0.9289634462048255
+False Alarm Rate:  0.07064881565396498
+
+
+
+=============================================================================================================
+=============================================================================================================
+=============================================================================================================
